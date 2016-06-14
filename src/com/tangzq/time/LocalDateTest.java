@@ -107,6 +107,34 @@ public class LocalDateTest {
         LocalDate end2=LocalDate.parse("2016-06-30",formatter);
 
         System.out.println(groupDateByMonths(start2,end2));
+        LocalDate date=LocalDate.parse("2016-05-12",formatter);
+        System.out.println(isBetween(date,start,end));
+        LocalDate date2=LocalDate.parse("2016-08-12",formatter);
+        System.out.println(isBetween(date2,start,end));
+        LocalDate date3=LocalDate.parse("2016-04-12",formatter);
+        System.out.println(isBetween(date3,start,end));
+        LocalDate date4=LocalDate.parse("2016-06-30",formatter);
+        System.out.println(isBetween(date4,start,end));
+    }
+
+
+    /**
+     * 判断日期是否在指定范围内
+     * @param date
+     * @param dateStart
+     * @param dateEnd
+     * @return
+     */
+    public static boolean isBetween(LocalDate date, LocalDate dateStart, LocalDate dateEnd) {
+        if (date != null && dateStart != null && dateEnd != null) {
+            if ((date.isAfter(dateStart) && date.isBefore(dateEnd))||date.isEqual(dateStart)||date.isEqual(dateEnd)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
