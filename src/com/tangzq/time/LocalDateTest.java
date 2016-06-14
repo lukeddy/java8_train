@@ -7,7 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.MONTHS;
@@ -83,6 +85,54 @@ public class LocalDateTest {
         }
 
         System.out.println(getMondayDate(froma,tob));
+
+        //取得指定日期范围内月的日期
+        LocalDate start=LocalDate.parse("2016-01-12",formatter);
+        LocalDate end=LocalDate.parse("2016-06-30",formatter);
+        LocalDate tempDate2=start;
+        Map<String,List<LocalDate>> map=new HashMap();
+        while(tempDate2.isBefore(end)){
+//            LocalDate firstDayOfMonth = initial.withDayOfMonth(1);
+//            LocalDate lastDayOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
+            System.out.println(tempDate2.getMonth().name());
+            LocalDate firstDayOfMonth = tempDate2.with(TemporalAdjusters.firstDayOfMonth());
+            LocalDate lastDayOfMonth = tempDate2.with(TemporalAdjusters.lastDayOfMonth());
+
+            System.out.println(firstDayOfMonth+","+lastDayOfMonth);
+            tempDate2=tempDate2.plusDays(1);
+        }
+
+        //取得指定日期范围内月的第一天的日期
+        LocalDate start2=LocalDate.parse("2016-05-12",formatter);
+        LocalDate end2=LocalDate.parse("2016-06-30",formatter);
+
+        System.out.println(groupDateByMonths(start2,end2));
+    }
+
+    /**
+     * 取得有效的月份第一天数据
+     * @param from
+     * @param to
+     * @return
+     */
+    private static List<LocalDate> groupDateByMonths(LocalDate from,LocalDate to){
+        LocalDate tempDate=from;
+        List<LocalDate> firstDayOfMonthList=new ArrayList<LocalDate>();
+        while(tempDate.isBefore(to)){
+            LocalDate firstDayOfThisMonth= tempDate.withDayOfMonth(1);
+            if(tempDate.toString().equals(firstDayOfThisMonth.toString())){
+                firstDayOfMonthList.add(tempDate);
+            }
+            tempDate=tempDate.plusDays(1);
+        }
+        while (!tempDate.isAfter(to)){
+            LocalDate firstDayOfThisMonth= tempDate.withDayOfMonth(1);
+            if(tempDate.toString().equals(firstDayOfThisMonth.toString())){
+                firstDayOfMonthList.add(tempDate);
+            }
+            tempDate=tempDate.plusDays(1);
+        }
+        return firstDayOfMonthList;
     }
 
     /**
